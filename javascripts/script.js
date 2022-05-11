@@ -181,6 +181,9 @@ function startGame() {
       paddleX[paddleIndex] = width - paddleWidth
     }
     // Hide Cursor
+    socket.emit('paddleMove', {
+      xPosition: paddleX[paddleIndex],
+    })
     canvas.style.cursor = 'none'
   })
 }
@@ -195,4 +198,10 @@ socket.on('startGame', (refereeId) => {
   console.log('Referee is: ', refereeId)
   isReferee = socket.id === refereeId
   startGame()
+})
+
+socket.on('paddleMove', (paddleData) => {
+  //toggle 1 into 0 and 0 into 1
+  const opponentPaddleIndex = 1 - paddleIndex
+  paddleX[opponentPaddleIndex] = paddleData.xPosition
 })
